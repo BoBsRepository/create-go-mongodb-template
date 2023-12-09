@@ -1,5 +1,10 @@
 {
-  "github": {
-    "silent": true
-  }
+    "trailingSlash":false,
+    "rewrites":
+    [
+        {
+            "source":"/(.*)",
+            "destination":"/main.go"
+        }
+    ]
 }
