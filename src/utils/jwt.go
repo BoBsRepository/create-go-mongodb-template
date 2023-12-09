@@ -2,12 +2,15 @@ package utils
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
-var jwtSecret = []byte("your-secret-key")
+
+var jwtToken = os.Getenv("jwt")
+var jwtSecret = []byte(jwtToken)
 
 func ValidateJWTToken(tokenString string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
