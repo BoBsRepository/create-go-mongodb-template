@@ -5,14 +5,16 @@ import (
 	"gin-mongo-api/src/database"
 	"gin-mongo-api/src/models"
 	"gin-mongo-api/src/res"
+	"gin-mongo-api/src/utils"
+	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
-	"net/http"
-	"time"
 )
 
 var userCollection *mongo.Collection = database.GetCollection(database.DB, "users")
@@ -78,6 +80,7 @@ func Greeting() gin.HandlerFunc {
 	}
 }
 
+
 func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -97,22 +100,42 @@ func Login() gin.HandlerFunc {
 		existingUser := models.User{}
 		err := userCollection.FindOne(ctx, bson.M{"email": loginData.Email}).Decode(&existingUser)
 		if err == mongo.ErrNoDocuments {
-
 			c.JSON(http.StatusNotFound, res.UserResponse{Status: http.StatusNotFound, Message: "error", Data: map[string]interface{}{"data": "User not found"}})
 			return
 		} else if err != nil {
-
 			c.JSON(http.StatusInternalServerError, res.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
 		err = bcrypt.CompareHashAndPassword([]byte(existingUser.Password), []byte(loginData.Password))
 		if err != nil {
-
 			c.JSON(http.StatusUnauthorized, res.UserResponse{Status: http.StatusUnauthorized, Message: "error", Data: map[string]interface{}{"data": "Invalid credentials"}})
 			return
 		}
 
-		c.JSON(http.StatusOK, res.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "Login successful"}})
+		
+	
+		token, err := utils.GenerateJWTToken(existingUser.ID.Hex())
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, res.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": "Failed to generate JWT token"}})
+			return
+		}
+
+		
+		c.Header("Authorization", "Bearer "+token)
+
+		
+		cookie := http.Cookie{
+			Name:     "jwt",
+			Value:    token,
+			Expires:  time.Now().Add(24 * time.Hour), 
+			HttpOnly: true,
+			Secure:   true, 
+			SameSite: http.SameSiteStrictMode,
+		}
+		http.SetCookie(c.Writer, &cookie)
+
+		
+		c.JSON(http.StatusOK, res.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "Login successful", "token": token}})
 	}
 }
