@@ -2,8 +2,8 @@ package main
 
 import (
 	"gin-mongo-api/src/database"
-	"github.com/gin-gonic/gin"
 	"gin-mongo-api/src/routes"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {

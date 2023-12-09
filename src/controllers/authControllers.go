@@ -72,6 +72,12 @@ func Register() gin.HandlerFunc {
 	}
 }
 
+func Greeting() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.JSON(http.StatusCreated, res.UserResponse{Status: http.StatusAccepted, Data: map[string]interface{}{"success": true}})
+	}
+}
+
 func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
