@@ -8,14 +8,14 @@
   <p align="center">
     An efficient CLI starter template to kickstart your Go lang project using the Gin framework and MongoDB, enabling you to rapidly develop RESTful APIs.
     <br />
-    <a href="https://github.com/your-username/your-repository"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/your-username/your-repository#readme"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://your-demo-url.com">View Demo</a>
+    <a href="https://github.com/BoBsRepository/create-go-mongodb-template">View Demo</a>
     ·
-    <a href="https://github.com/your-username/your-repository/issues">Report Bug</a>
+    <a href="https://github.com/BoBsRepository/create-go-mongodb-template/issues">Report Bug</a>
     ·
-    <a href="https://github.com/your-username/your-repository/issues">Request Feature</a>
+    <a href="https://github.com/BoBsRepository/create-go-mongodb-template/issues">Request Feature</a>
   </p>
 </div>
 
