@@ -1,1 +1,41 @@
-.env
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Folders
+_bin/
+_obj/
+_vendor/
+*.test/
+
+# Compiled Go programs
+*.exe
+*.test
+*.prof
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Dependency directories
+vendor/
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Go binary
+go.sum
+
+# Ignore generated files by go generate
+*_string.go
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# Gin binary file
+gin-bin
